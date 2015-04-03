@@ -17,7 +17,7 @@ Create a new branch from master at the 811362b commit. Call it `combined` (or so
 
 `git branch combined 811362b`
 
-Now there are three branches: `master`, `feature` and `combined`. Use the rebase command to add the feature branch to the combined branch:
+Now there are three branches: master, feature and combined. Use the rebase command to add the feature branch to the combined branch:
 
 `git rebase combined feature`
 
