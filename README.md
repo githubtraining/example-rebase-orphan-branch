@@ -1,20 +1,23 @@
 ## Rebasing an Orphaned Branch
 
-We wanted to give people a good example of how they can remedy a situation of an orphaned branch that needs to be spliced into an existing branch. Here is an example of what this situation could look like:
+### A Word of Caution
+When using rebase you rewrite history. Because the SHA of each rebased commit has been changed you are now out of sync with origin and anyone else's branch. If this has been done on the main server before making the repo available there shouldn't be an issue. If this has been done in an actively used repo you will need to force push your changes to the server and coordinate with everyone who has the codebase to make sure they get the new changes. A `force` push should be a **very** rare occurrence.  
+
+This example provides you with a solution to remedy an orphaned branch that needs to be spliced into an existing branch. Here is an example of what this situation could look like:
 
 ![Splice Example](initial-branch.png)
 
-What we really need to do is get the `feature` branch added to the master branch at commit 811362b with the rest of the commits added after the feature branch's commit. This is what we need the final output to look like:
+The feature branch needs to be added to the master branch at commit 811362b with the rest of the commits from master being added after the feature branch's commits. This is what the final output should look like:
 
 ![Expected Output](expected-output.png)
 
 ### Getting Started
 
-The first thing we want to do is create a new branch from master at the 811362b commit. Let's create that new branch now and call it `combined` and create it from the point that we want to inject the feature branch: 
+Create a new branch from master at the 811362b commit. Call it `combined` (or something other descriptive name that implies intent) and create it from the point where the feature branch will be injected:
 
 `git branch combined 811362b`
 
-Now we have three branches: `master`, `feature` and `combined`. Now that we have this third branch that we are using to combine the other branches we can add the `feature` branch to it. Let's do that by using the rebase feature. We will use the `combined` branch as the base and add the feature branch to it:
+Now there are three branches: `master`, `feature` and `combined`. Use the rebase command to add the feature branch to the combined branch:
 
 `git rebase combined feature`
 
@@ -30,7 +33,7 @@ The resulting branches will be:
 
 ![After First Rebase](after-first-rebase.png)
 
-We now have the `feature` branch added onto the end of the `combined` branch. But we still need the two commits at the end of the `master` branch to be added onto the `combined` branch. Let's do that by rebasing master onto combined with `rebased --onto`:
+The feature branch is now added to the end of the combined branch. The two commits at the end of the master branch need to be added onto the combined branch. Do that by rebasing master onto combined with `rebased --onto`:
 
 `git rebase --onto feature combined master`
 
@@ -41,10 +44,6 @@ Applying: A random change of 17877 to main3.md
 Applying: A random change of 11338 to main4.md
 ```
 
-The resulting branches will look like our expected output as the `master` branch has been added to the `combined` branch. Here is what we are left with after branch cleanup:
+The resulting branches will look like the expected output. The master branch has been added to the combined branch. Here is what the repo looks like after branch cleanup:
 
 ![Finalized Branches](expected-output.png)
-
-We now have inserted the feature branch into the master branch and have a clean line of history. However, that brings up an important `warning`. When using rebase you rewrite history. Because the sha of each rebased commit has been changed you are now out of sync with origin and anyone else's branch. If this has been done on the main server before making the repo available there shouldn't be an issue. If this has been done in an actively used repo you will need to force push your changes to the server and coordinate with everyone who has the codebase to make sure they get the new changes. A `force` push should be a **very** rare occurrence.  
-
-
