@@ -2,7 +2,7 @@
 
 We wanted to give people a good example of how they can remedy a situation of an orphaned branch that needs to be spliced into an existing branch. Here is an example of what this situation could look like:
 
-![Splice Example](initial-output.png)
+![Splice Example](initial-branch.png)
 
 What we really need to do is get the `feature` branch added to the master branch at commit 811362b with the rest of the commits added after the feature branch's commit. This is what we need the final output to look like:
 
